@@ -6,24 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Coding Quiz</title>
-    <link rel="stylesheet" href="./assets/css/reset.css" />
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css"/>
 </head>
 
 <body>
 
     <header>
-        <a href="#" id="view-highscores"><span>View Highscores</span></a>
-        <h1>Time Left: <span id="countdown">60</span></h1>
+        <h2>Time Left: <span id="countdown-timer">60</span></h2>
     </header>
 
-    <!-- front slide (intro page)-->
+    <!-- front container (intro page)-->
     <div id="start-container">
-        <h2>A Very Short JavaScript Quiz</h2>
-        <p>How well do you know coding? Answer these questions on time... or else!</p>
+        <h1>A Very Short JavaScript Quiz</h1>
+        <p>How well do you know coding? Try to answer these questions on time.</p>
         <button id="start-button" class="button">Start the Quiz</button>
     </div>
 
+    <!-- main container, holds questions and score -->
     <div id="questions-container">
         <div id="questions-card" class="hidden">
             <div id="question">
@@ -39,7 +38,7 @@
         </div>
     
     
-    
+        <!-- score container appears after quiz ends -->
         <form id="finished-container" class="hidden">
             <h3>You are finished.</h3>
             <h4>Your final score is: <span id="score"></span>.</h4>
@@ -48,6 +47,7 @@
             <button id="submit-button" class="button">Submit</button>
         </form>
     
+        <!-- highscores -->
         <div id="highscores-container" class="hidden">
             <h3>Highscores</h3>
             <h4 id="empty-highscores-list" class="hidden">All scores have been cleared.</h4>
@@ -61,7 +61,9 @@
     
     </div>
 
+    <!-- link to JavaScript-->
     <script src="./assets/js/script.js"></script>
+    
 </body>
 
 </html>
