@@ -1,5 +1,6 @@
+// Declaring variables, mostly for html elements
 let header = document.querySelector("header");
-let countdown = document.querySelector("#countdown-timner");
+let countdown = document.querySelector("#countdown-timer");
 let startContainer = document.querySelector("#start-container");
 let questionsContainer = document.querySelector("#questions-container");
 let questionCard = document.querySelector("#questions-card");
@@ -12,19 +13,21 @@ let highscoresContainer = document.querySelector("#highscores-container");
 let emptyHighscores = document.querySelector("#empty-highscores-list");
 let highscoresList = document.querySelector("#highscores-list");
 let finalHighscore = document.querySelector("#score");
-let viewHighscore = document.querySelector("#view-highscores");
 
+// Declaring variables for buttons
 let startButton = document.querySelector("#start-button");
 let submitButton = document.querySelector("#submit-button");
 let tryAgainButton = document.querySelector("#try-again-button");
 let clearButton = document.querySelector("#clear-button");
 
-let qListCurrent = [];
-let qIndex = 0;
-let qCard = {};
+// Other variables important for the quiz
+let qListCurrent = []; // This holds the array used for calculating and putting down question and buttons
+let qIndex = 0; // This is used to determine what question the user is on
+let qCard = {}; // This holds all the info for the question
 let timer = 60;
 let score = 0;
 
+// List of quiz questions, you can add as many as you want provided they are in this format
 let qList = [
     {
         question: "Who invented JavaScript?",
@@ -32,47 +35,62 @@ let qList = [
             "Douglas Crockford",
             "Sheryl Sandberg",
             "Brendan Eich",
-            "Beebo the Goblin"
+            "Beebo the Goblin",
+            "I don't care..."
         ],
         rightAnswer: "Brendan Eich"
     },
     {
-        question: "Which one of these is a JavaScript package manager?",
+        question: "Which of the following is correct about features of JavaScript?",
         answers: [
-            "Node.js",
-            "TypeScript",
-            "Dingdong",
-            "npm"
+            "JavaScript is a lightweight, interpreted programming language.",
+            "JavaScript is designed for creating network-centric applications.",
+            "JavaScript is complementary to and integrated with Java.",
+            "All of the above."
         ],
-        rightAnswer: "npm"
+        rightAnswer: "All of the above."
     },
     {
-        question: "Which is the right answer?",
+        question: "Which of the following function of Array object removes the last element from an array and returns that element?",
         answers: [
-            "Not this one",
-            "Not this one",
-            "Not this one",
-            "This one"
+            "pop()",
+            "push()",
+            "join()",
+            "map()"
         ],
-        rightAnswer: "This one"
+        rightAnswer: "pop()"
+    },
+    {
+        question: "Which of the following function of Array object returns a string representing the array and its elements?",
+        answers: [
+            "toSource()",
+            "sort()",
+            "splice()",
+            "toString()"
+        ],
+        rightAnswer: "toString()"
     }
     
 ];
 
+// This shows/reveals an element
 function showEle(element) {
     element.removeAttribute("class", "hidden");
 }
 
+// This hides the element by setting it to a class that has the css set to display:none
 function hideEle(element) {
     element.setAttribute("class", "hidden");
 }
 
+// This function is a while loop that clears all children elements within the element given
 function clearList(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
 
+// This function checks whether the answer clicked is correct or not
 function checkAnswer(event) {
     let chosenEle = event.target;
     let chosenText = chosenEle.textContent;
@@ -93,6 +111,7 @@ function checkAnswer(event) {
     }
 }
 
+// This function converts timer to score
 function finalScore() {
     if (timer < 0) {
         timer = 0;
@@ -100,6 +119,7 @@ function finalScore() {
     return score = timer;
 }
 
+// This function shows the container with the final score and the input for initials
 function showScoreContainer(scoreValue) {
     hideEle(questionCard);
     hideEle(header);
@@ -108,6 +128,7 @@ function showScoreContainer(scoreValue) {
     finalHighscore.innerText = scoreValue;
 }
 
+// This function shows the highscores and the locally stored highscores list
 function showHighscores() {
     let savedScoreLocal = localStorage.getItem("high scores");
     let highscoresArray = JSON.parse(savedScoreLocal);
@@ -118,6 +139,7 @@ function showHighscores() {
     hideEle(finishedContainer);
     showEle(highscoresContainer);
 
+    // This checks if any high scores are stored in local storage
     if (savedScoreLocal === null) {
         return;
     }
@@ -129,9 +151,11 @@ function showHighscores() {
     }
 }
 
+// This function stores highscore in local storage after entering initials
 function storeHighscores(event) {
     event.preventDefault();
 
+    // This forces user to enter something in the initials input
     if (initials.value === "") {
         alert("Please do not leave this empty.");
         return;
@@ -140,6 +164,7 @@ function storeHighscores(event) {
     hideEle(finishedContainer);
     showEle(highscoresContainer);
     
+    // This part stores it into local storage
     let savedScoreLocal = localStorage.getItem("high scores");
     let highscoresArray;
     let user = {
@@ -155,12 +180,14 @@ function storeHighscores(event) {
 
     highscoresArray.push(user);
 
+    // This turns array into string so it can be locally stored
     let highscoresArrayString = JSON.stringify(highscoresArray);
     window.localStorage.setItem("high scores", highscoresArrayString);
 
     showHighscores();
 }
 
+// This function deletes local storage of high scores
 function clearHighscores() {
     clearList(highscoresList);
     showEle(emptyHighscores);
@@ -168,6 +195,7 @@ function clearHighscores() {
 
 }
 
+// This function begins the clock
 function startTimer() {
     timeInterval = setInterval(function() {
         countdown.textContent = timer;
@@ -176,11 +204,15 @@ function startTimer() {
         if (timer < 0) {
             score = 0;
             showScoreContainer(score);
+            questionEle.textContent = '';
             clearInterval(timeInterval);
+
         }
     }, 1000);
 }
 
+
+// This function clears the question and puts in the next one
 function nextQuestion() {
     qCard = qListCurrent[qIndex];
     questionEle.innerText = qCard.question;
@@ -197,6 +229,7 @@ function nextQuestion() {
     }
 }
 
+// This function clears buttons and put in new ones with the next question
 function nextChoices() {
     qIndex++;
     if (qIndex < qListCurrent.length) {
@@ -210,6 +243,7 @@ function nextChoices() {
     }
 }
 
+// This function starts the quiz
 function start() {
     qListCurrent = qList
     hideEle(startContainer);
@@ -218,6 +252,7 @@ function start() {
     nextQuestion();
 }
 
+// Resets quiz to initial values so that the quiz works just like it does the first time you load it
 function reset() {
     timer = 60;
     qIndex = 0;
@@ -226,7 +261,11 @@ function reset() {
     qCard = {};
     initials.value = "";
     
-    clearList(highscoresList);
+    clearList(choicesEle);
+    questionEle.textContent = '';
+    if (responseEle.firstElementChild.innerText != null) {
+        responseEle.firstElementChild.innerText = ""
+    };
     hideEle(highscoresContainer);
     hideEle(finishedContainer);
     hideEle(emptyHighscores);
@@ -234,11 +273,10 @@ function reset() {
     showEle(startContainer);
 }
 
-
+// Event listeners for the various buttons
 startButton.addEventListener("click", start);
 tryAgainButton.addEventListener("click", reset);
 clearButton.addEventListener("click", clearHighscores);
-viewHighscore.addEventListener("click", showHighscores);
 submitButton.addEventListener("click", function() {
     storeHighscores(event);
 })
